@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Smart Student Manager - NIST</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body, html {
+      height: 100%;
+      font-family: Arial, sans-serif;
+      background: url('https://res.cloudinary.com/dkho9wtji/image/upload/v1743939621/nist_bg_prjtfu.gif') no-repeat center center/cover;
+      color: white;
+    }
+
+    .navbar {
+      gap: 30px;
+      background: rgba(0, 0, 0, 0.6);
+      padding: 5px;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .navbar a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 16px;
+      padding: 10px 15px;
+      transition: background 0.3s;
+    }
+
+    .navbar a:hover {
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 5px;
+    }
+
+    .heading {
+      font-size: 40px;
+      font-weight: 900;
+      color: #fff;
+      text-shadow: 2px 2px 10px rgba(0,0,0,0.8);
+      text-align: center;
+      padding: 20px;
+    }
+
+    .app-title {
+      font-size: 25px;
+      color: white;
+      padding: 15px 40px;
+      background: rgba(0, 0, 0, 0.6);
+      border-radius: 20px;
+      text-align: center;
+      box-shadow: 0 0 20px rgba(0,0,0,0.8);
+      letter-spacing: 2px;
+      display: inline-block;
+    }
+
+    .logo {
+      height: 60px;
+      background-color: #fff;
+    }
+
+    /* Dashboard Cards */
+    .dashboard-cards {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 20px;
+      padding: 10px 20px;
+    }
+
+    .card-box {
+      background: rgba(0, 0, 0, 0.65);
+      border-radius: 15px;
+      padding: 15px 5px;
+      text-align: center;
+      min-width: 180px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+      border-top: 4px solid;
+    }
+
+    .card-box h2 {
+      font-size: 40px;
+      font-weight: bold;
+    }
+
+    .card-box p {
+      font-size: 14px;
+      margin-top: 5px;
+      opacity: 0.85;
+    }
+
+    .card-total   { border-color: #4fc3f7; }
+    .card-paid    { border-color: #66bb6a; }
+    .card-unpaid  { border-color: #ef5350; }
+    .card-amount  { border-color: #ffa726; }
+
+    .card-total h2   { color: #4fc3f7; }
+    .card-paid h2    { color: #66bb6a; }
+    .card-unpaid h2  { color: #ef5350; }
+    .card-amount h2  { color: #ffa726; }
+
+    /* Charts */
+    .charts-section {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 25px;
+      padding: 10px 30px 5px 30px;
+    }
+
+    .chart-box {
+      background: rgba(0, 0, 0, 0.65);
+      border-radius: 15px;
+      padding: 15px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+    }
+
+    .chart-box h5 {
+      text-align: center;
+      margin-bottom: 15px;
+      color: #fff;
+      font-size: 16px;
+    }
+
+    .watermark {
+      position: fixed;
+      bottom: 40px;
+      left: 10px;
+      color: #d3d3d3;
+      font-size: 14px;
+      opacity: 0.7;
+      z-index: 1000;
+    }
+
+    .bottom-marquee {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      color: white;
+      font-size: 15px;
+      padding: 5px 0;
+      z-index: 9999;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <div class="navbar d-flex align-items-center justify-content-between">
+    <div class="d-flex align-items-center">
+      <img class="logo" src="https://res.cloudinary.com/dkho9wtji/image/upload/v1743946422/nist_logo-removebg-preview_mjmkuv.png" alt="Logo">
+    </div>
+    <div class="nav-links d-flex justify-content-center flex-grow-1">
+      <a href="/student-entry">Student Entry</a>
+      <a href="/student-search">Student Search</a>
+      <a href="/update-sem-data">Sem Data</a>
+      <a href="/send-fee-alert">Fee Alert</a>
+      <a onclick="downloadAll()">Download All Students</a>
+      <a href="/logout" class="navbar-a" style="color:#ef5350;">🚪 Logout</a>
+    </div>
+    <div style="width: 60px;"></div>
+  </div>
+
+  <!-- Heading -->
+  <div class="heading">Welcome to Nobel Institute of Science and Technology</div>
+  <div class="text-center mb-3">
+    <span class="app-title">Smart Student Manager</span>
+  </div>
+
+  <!-- Dashboard Cards -->
+  <div class="dashboard-cards">
+    <div class="card-box card-total">
+      <h2>{{ total_students }}</h2>
+      <p>Total Students</p>
+    </div>
+    <div class="card-box card-paid">
+      <h2>{{ paid_count }}</h2>
+      <p>Fee Paid</p>
+    </div>
+    <div class="card-box card-unpaid">
+      <h2>{{ unpaid_count }}</h2>
+      <p>Fee Unpaid</p>
+    </div>
+    <div class="card-box card-amount">
+      <h2>₹{{ total_collected }}</h2>
+      <p>Total Collected</p>
+    </div>
+  </div>
+
+  <!-- Charts -->
+  <div class="charts-section">
+
+    <!-- Pie Chart -->
+    <div class="chart-box">
+      <h5>Paid vs Unpaid Students</h5>
+      <canvas id="pieChart" width="300" height="250"></canvas>
+    </div>
+
+    <!-- Semester Bar Chart -->
+    <div class="chart-box">
+      <h5>Semester Wise Fee Collected</h5>
+      <canvas id="semBarChart" width="320" height="300"></canvas>
+    </div>
+
+    <!-- Course Bar Chart -->
+    <div class="chart-box">
+      <h5>Course Wise Students</h5>
+      <canvas id="courseBarChart" width="320" height="300"></canvas>
+    </div>
+
+  </div>
+
+  <span class="watermark">Developed By <br> Ezra Polavarapu</span>
+
+  
+
+  <script>
+    // Pie Chart
+    new Chart(document.getElementById('pieChart'), {
+      type: 'pie',
+      data: {
+        labels: ['Paid', 'Unpaid'],
+        datasets: [{
+          data: [{{ paid_count }}, {{ unpaid_count }}],
+          backgroundColor: ['#66bb6a', '#ef5350'],
+          borderColor: ['#fff'],
+          borderWidth: 2
+        }]
+      },
+      options: {
+        plugins: {
+          legend: { labels: { color: 'white' } }
+        }
+      }
+    });
+
+    // Semester Bar Chart
+    new Chart(document.getElementById('semBarChart'), {
+      type: 'bar',
+      data: {
+        labels: ['Sem 1', 'Sem 2', 'Sem 3', 'Sem 4'],
+        datasets: [{
+          label: 'Fee Collected (₹)',
+          data: {{ sem_totals }},
+          backgroundColor: ['#4fc3f7', '#ffa726', '#66bb6a', '#ab47bc'],
+          borderRadius: 8
+        }]
+      },
+      options: {
+        plugins: {
+          legend: { labels: { color: 'white' } }
+        },
+        scales: {
+          x: { ticks: { color: 'white' } },
+          y: { ticks: { color: 'white' } }
+        }
+      }
+    });
+
+    // Course Bar Chart
+    const courseLabels = {{ course_labels | tojson }};
+    const courseData = {{ course_data | tojson }};
+
+    new Chart(document.getElementById('courseBarChart'), {
+      type: 'bar',
+      data: {
+        labels: courseLabels,
+        datasets: [{
+          label: 'Students',
+          data: courseData,
+          backgroundColor: '#4fc3f7',
+          borderRadius: 8
+        }]
+      },
+      options: {
+        plugins: {
+          legend: { labels: { color: 'white' } }
+        },
+        scales: {
+          x: { ticks: { color: 'white' } },
+          y: { ticks: { color: 'white' } }
+        }
+      }
+    });
+
+    function downloadAll() {
+    window.open("http://127.0.0.1:5000/download-all");
+    }
+  </script>
+
+</body>
+</html>

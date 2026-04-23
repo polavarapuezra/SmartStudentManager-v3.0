@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Update Semester Data</title>
+    <link rel="stylesheet" href="/static/index.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body class="entrybg">
+
+/pop/
+<div id="popupMsg" class="alert text-center d-none"
+     style="position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+     width: 320px; z-index: 9999; font-weight: bold;">
+</div>
+
+<div class="formcard text-center">
+    <h2 class="searchstudent">Enter Semester Details</h2>
+
+    <form id="semForm" class="formstyle" onsubmit="event.preventDefault(); submitSemData();">
+        
+        <label class="col-2">Roll No:</label>
+        <input type="text" class="col-3" id="rollNo" required><br><br>
+
+        <label class="col-2">Semester (e.g., 1):</label>
+        <input type="text" class="col-3" id="semester" required><br><br>
+
+        <label class="col-2">Fee:</label>
+        <input type="text" class="col-3" id="fee" required><br><br>
+
+        <label class="col-2">Result:</label>
+        <input type="text" class="col-3" id="result" required><br><br>
+
+        <button type="submit" class="serbutton">Submit</button>
+        <a href="/" class="serbutton">🏠 HOME</a>
+    </form>
+</div>
+
+<span class="watermark"> Developed By <br> Ezra Polavarapu </span>
+
+<div class="bottom-marquee">
+    <marquee behavior="scroll" direction="left" scrollamount="5">
+        Welcome to Nobel Institute of Science and Technology...
+    </marquee>
+</div>
+
+<script>
+    function showPopup(message, type) {
+        const popup = document.getElementById("popupMsg");
+
+        popup.className = "alert alert-" + type + " text-center";
+        popup.innerText = message;
+        popup.classList.remove("d-none");
+
+        setTimeout(() => {
+            popup.classList.add("d-none");
+        }, 3000);
+    }
+
+    async function submitSemData() {
+        const data = {
+            rollNo: document.getElementById("rollNo").value.trim(),
+            semester: document.getElementById("semester").value.trim(),
+            fee: document.getElementById("fee").value.trim(),
+            result: document.getElementById("result").value.trim()
+        };
+
+        if (Object.values(data).some(v => !v)) {
+            showPopup("Please fill in all fields", "warning");
+            return;
+        }
+
+        try {
+            const response = await fetch("/update-sem-data", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data)
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+                showPopup(result.message, "success");
+                document.getElementById("semForm").reset();
+            } else {
+                showPopup(result.error || "Unknown error", "danger");
+            }
+
+        } catch (error) {
+            showPopup("Error updating semester data", "danger");
+            console.error(error);
+        }
+    }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Details</title>
+    <link rel="stylesheet" href="/static/index.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="entrybg">
+    <div class="login-box">
+        <!-- Result -->
+        <h1 id="passcolor">{{n}}</h1>
+
+        <!-- Student Details -->
+        <div class="d-flex flex-row">
+            <h1 id="passcolor1" class="me-5 col-6">Full Name : <span id="spancolor">{{na}}</span></h1>
+            <h1 id="passcolor1" class="col-6">Roll No : <span id="spancolor">{{roll}}</span></h1>
+        </div>
+        <div class="d-flex flex-row">
+            <h1 id="passcolor1" class="me-5 col-6">Admission No : <span id="spancolor">{{admission_no}}</span></h1>
+            <h1 id="passcolor1" class="col-6">Gender : <span id="spancolor">{{gender}}</span></h1>
+        </div>
+        <div class="d-flex flex-row">
+            <h1 id="passcolor1" class="me-5 col-6">Father Name : <span id="spancolor">{{father_name}}</span></h1>
+            <h1 id="passcolor1" class="col-6">Mother Name : <span id="spancolor">{{mother_name}}</span></h1>
+        </div>
+
+        <div class="d-flex flex-row">
+            <h1 id="passcolor1" class="me-5 col-6">Phone : <span id="spancolor">{{phone}}</span></h1>
+            <h1 id="passcolor1" class="col-6">Aadhaar No : <span id="spancolor">{{aadhaar_no}}</span></h1>
+        </div>
+        <div class="d-flex flex-row">
+            <h1 id="passcolor1" class="me-5 col-6">Date of Birth : <span id="spancolor">{{dob}}</span></h1>
+            <h1 id="passcolor1" class="col-6">Course Name : <span id="spancolor">{{course_name}}</span></h1>
+        </div>
+        
+            <h1 id="passcolor1" class="col-6">Date of Admission : <span id="spancolor">{{admission_date}}</span></h1>
+             
+        
+        <div class="d-flex flex-row">
+            <h1 id="passcolor1" class="me-5 col-6">Sem 1 Fee : <span id="spancolor">{{sem1_fee}}</span></h1>
+            <h1 id="passcolor1" class="col-6">Sem 1 Result : <span id="spancolor">{{sem1_result}}</span></h1>
+        </div>
+        <div class="d-flex flex-row">
+            <h1 id="passcolor1" class="me-5 col-6">Sem 2 Fee : <span id="spancolor">{{sem2_fee}}</span></h1>
+            <h1 id="passcolor1" class="col-6">Sem 2 Result : <span id="spancolor">{{sem2_result}}</span></h1>
+        </div>
+        <div class="d-flex flex-row">
+            <h1 id="passcolor1" class="me-5 col-6">Sem 3 Fee : <span id="spancolor">{{sem3_fee}}</span></h1>
+            <h1 id="passcolor1" class="col-6">Sem 3 Result : <span id="spancolor">{{sem3_result}}</span></h1>
+        </div>
+        <div class="d-flex flex-row">
+            <h1 id="passcolor1" class="me-5 col-6">Sem 4 Fee : <span id="spancolor">{{sem4_fee}}</span></h1>
+            <h1 id="passcolor1" class="col-6">Sem 4 Result: <span id="spancolor">{{sem4_result}}</span></h1>
+        </div>
+
+            
+
+        <h1 id="passcolor1" class="col-12">Home Address : <span id="spancolor">{{address}}</span></h1>
+        <h1 id="passcolor1" class="col-12">Email Address: <span id="spancolor">{{email}}</span></h1>
+
+        <!-- Search Again Button -->
+        <div class="align">
+            <button onclick="refreshPreviousPage()" class="serbutton">Search Again</button>
+            <a href="/" class="serbutton">🏠 HOME</a>
+            <button class="serbutton" color-green onclick="openDownload('{{ roll }}')">Download PDF</button>
+
+        </div>
+        </div>
+        <span class="watermark"> Developed By <br> Ezra Polavarapu </span>
+  <div class="bottom-marquee">
+    <marquee behavior="scroll" direction="left" scrollamount="5"> Welcome to Nobel Institute of Science and Technology The Student Data Management and Fee Reminder System is an
+        interactive web-based application designed to help educational
+        institutions efficiently manage student records and automate fee
+        reminders. This system allows users to store and search student data
+        while ensuring timely communication through automated What’s App
+        messages based on specific conditions,
+      This is a final Year project Developed by Ezra Polavarapu
+    </marquee>
+  </div>
+
+        <script>
+            function refreshPreviousPage() {
+                sessionStorage.setItem('refreshFlag', 'true');
+                history.back();  // Go back to previous page
+            }
+            function openDownload(roll) {
+                window.open("http://127.0.0.1:5000/download-student/" + roll);
+            }
+        </script>
+    </div>
+
+    <span class="watermark">Developed By <br> Ezra Polavarapu</span>
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UFT-8">
+    <title>No Employee</title>
+    <link rel="stylesheet" href="/static/index.css">
+</head>
+<body class="entrybg">
+    
+    <div class="login-box" >
+        <h1 id="passcolor" >{{n}} <span class="blink">{{z}}</span></h1>
+        <div class="align">
+            <button onclick="refreshPreviousPage()" class="again btn">Search Again</button>
+            <a href="/" class="serbutton">🏠 HOME</a>
+  
+            <script>
+                function refreshPreviousPage() {
+                    sessionStorage.setItem('refreshFlag', 'true');
+                    history.back();
+                }
+            </script>
+            </div>
+    </div>
+
+    <div class="bottom-marquee">
+        <marquee behavior="scroll" direction="left" scrollamount="5"> Welcome to Nobel Institute of Science and Technology The Student Data Management and Fee Reminder System is an
+            interactive web-based application designed to help educational
+            institutions efficiently manage student records and automate fee
+            reminders. This system allows users to store and search student data
+            while ensuring timely communication through automated What’s App
+            messages based on specific conditions,
+          This is a final Year project Developed by Ezra Polavarapu
+        </marquee>
+      </div>
+    <span class="watermark"> Developed By <br> Ezra Polavarapu </span>
+</body>
+</html>
