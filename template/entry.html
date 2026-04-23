@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="stylesheet" href="/static/index.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <title>Save Data to Excel</title>
+</head>
+<body class="entrybg">
+  <div class="formcard">
+    <h2 class="searchstudent">Enter Details :</h2>
+    <form id="dataForm" class="formstyle"> 
+      <div class="d-flex flex-row">
+        <div class="col-6">
+          <label for="rollNo" class="col-4">Roll No  &nbsp;:</label>
+          <input type="text" id="rollNo" class="col-6" required><br><br>
+        </div>
+        <div class="col-6">
+          <label for="admissionNo" class="col-4">Admission No &nbsp;: </label>
+          <input type="text" id="admissionNo" class="col-6" required><br><br>
+        </div>
+      </div>
+
+      <div class="d-flex flex-row">
+        <div class="col-6">
+          <label for="fullName" class="col-4">Full Name &nbsp;:</label>
+          <input type="text" id="fullName" class="col-6" required><br><br>
+        </div>
+        <div class="col-6 d-flex flex-row">
+          <div class="col-4">
+          <label style="font-size: 17px;">Gender &nbsp;:
+          </div>
+          <div class="col-6">
+          <input type="radio" class="" name="gender" id="male" value="Male" style="transform: scale(1.5);" required>
+          <label for="male" style="font-size: 20px;">Male &nbsp;&nbsp;</label>
+          <input type="radio" name="gender" id="female" value="Female" style="transform: scale(1.5);">
+          <label for="female" style="font-size: 20px;">Female</label><br><br>
+        </div>
+        </div>
+      </div>
+
+      <div class="d-flex flex-row">
+        <div class="col-6">
+          <label for="fatherName" class="col-4">Father Name : </label>
+          <input type="text" id="fatherName" class="col-6" required><br><br>
+        </div>
+        <div class="col-6">
+          <label for="motherName" class="col-4">Mother Name :</label>
+          <input type="text" id="motherName" class="col-6" required><br><br>
+        </div>
+      </div>
+
+      <div class="d-flex flex-row">
+        <div class="col-6">
+          <label for="email" class="col-4">Email :</label>
+          <input type="email" id="email" class="col-6" required><br><br>
+        </div>
+        <div class="col-6">
+          <label for="phone" class="col-4">Phone :</label>
+          <input type="text" id="phone" class="col-6" required><br><br>
+        </div>
+      </div>
+
+      <div class="d-flex flex-row">
+        <div class="col-6">
+          <label for="aadhaarNo" class="col-4">Aadhaar No :</label>
+          <input type="text" id="aadhaarNo" class="col-6" required><br><br>
+        </div>
+        <div class="col-6">
+          <label for="dob" class="col-4">Date of Birth :</label>
+          <input type="date" id="dob" class="col-6" required><br><br>
+        </div>
+      </div>
+
+      <div class="d-flex flex-row">
+        <div class="col-6">
+          <label for="courseName" class="col-4">Course Name :</label>
+          <input type="text" id="courseName" class="col-6" required><br><br>
+        </div>
+        <div class="col-6">
+          <label for="admissionDate" class="col-4">Date of Admission :</label>
+          <input type="date" id="admissionDate" class="col-6" required><br><br>
+        </div>
+      </div>
+      <div class="d-flex flex-row">
+      <label for="address" class="col-2">Address :</label>
+      <input type="text" id="address" class="col-8" style="width: 76%; height: 30px;" required><br><br>
+      </div>
+      <div class="text-center">
+      <button type="button" onclick="saveData()" class="serbutton">Save Data</button>
+      <a href="/" class="serbutton">🏠 HOME</a>
+    </div>
+
+    </form>
+  </div>
+  <span class="watermark"> Developed By <br> Ezra Polavarapu </span>
+  <div class="bottom-marquee">
+    <marquee behavior="scroll" direction="left" scrollamount="5"> Welcome to Nobel Institute of Science and Technology The Student Data Management and Fee Reminder System is an
+        interactive web-based application designed to help educational
+        institutions efficiently manage student records and automate fee
+        reminders. This system allows users to store and search student data
+        while ensuring timely communication through automated What’s App
+        messages based on specific conditions,
+      This is a final Year project Developed by Ezra Polavarapu
+    </marquee>
+  </div>
+
+  <div id="popupMsg" class="alert text-center d-none"
+     style="position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+     width: 320px; z-index: 9999; font-weight: bold;">
+</div>
+
+  <script>
+    function showPopup(message, type) {
+  const popup = document.getElementById("popupMsg");
+
+  popup.className = "alert alert-" + type + " text-center";
+  popup.innerText = message;
+  popup.classList.remove("d-none");
+
+  setTimeout(() => {
+    popup.classList.add("d-none");
+  }, 3000);
+}
+    async function saveData() {
+      const gender = document.querySelector('input[name="gender"]:checked')?.value;
+      const data = {
+        rollNo: document.getElementById("rollNo").value,
+        admissionNo: document.getElementById("admissionNo").value,
+        fullName: document.getElementById("fullName").value,
+        gender: gender,
+        fatherName: document.getElementById("fatherName").value,
+        motherName: document.getElementById("motherName").value,
+        address: document.getElementById("address").value,
+        email: document.getElementById("email").value,
+        phone: document.getElementById("phone").value,
+        aadhaarNo: document.getElementById("aadhaarNo").value,
+        dob: document.getElementById("dob").value,
+        courseName: document.getElementById("courseName").value,
+        admissionDate: document.getElementById("admissionDate").value
+      };
+
+      if (Object.values(data).some(val => !val)) {
+        showPopup("Please fill all fields", "warning");
+        return;
+      }
+
+      try {
+        const response = await fetch("/save-data", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(data)
+        });
+
+        const result = await response.json();
+        if (response.ok) {
+          showPopup(result.message, "success");
+          document.getElementById("dataForm").reset();
+        } else {
+          showPopup(result.error || "Error occurred", "danger");
+        }
+      } catch (error) {
+        showPopup("Error saving data. Please try again", "danger");
+        console.error(error);
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const inputs = Array.from(document.querySelectorAll("#dataForm input"));
+
+      inputs.forEach((input, index) => {
+        input.addEventListener("keydown", (e) => {
+          if (e.key === "Enter") {
+            e.preventDefault();
+            const nextInput = inputs[index + 1];
+            if (nextInput) {
+              nextInput.focus();
+            } else {
+              document.querySelector("button[type='button']").click();
+            }
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>
